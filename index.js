@@ -117,6 +117,53 @@ const CATALOGS = {
         fetch: (page) => tmdb.getMoviesByGenre(99, page)
     },
 
+    // Genres Séries
+    'genre-series-action': {
+        name: '💥 Action',
+        type: 'series',
+        fetch: (page) => tmdb.getSeriesByGenre(10759, page) // Action & Adventure
+    },
+    'genre-series-comedy': {
+        name: '😂 Comédie',
+        type: 'series',
+        fetch: (page) => tmdb.getSeriesByGenre(35, page)
+    },
+    'genre-series-horror': {
+        name: '😱 Horreur',
+        type: 'series',
+        fetch: (page) => tmdb.getSeriesByGenre(9648, page) // Mystery (closest)
+    },
+    'genre-series-scifi': {
+        name: '🚀 Science-Fiction',
+        type: 'series',
+        fetch: (page) => tmdb.getSeriesByGenre(10765, page) // Sci-Fi & Fantasy
+    },
+    'genre-series-thriller': {
+        name: '🔪 Thriller',
+        type: 'series',
+        fetch: (page) => tmdb.getSeriesByGenre(80, page) // Crime
+    },
+    'genre-series-romance': {
+        name: '💕 Romance',
+        type: 'series',
+        fetch: (page) => tmdb.getSeriesByGenre(18, page) // Drama (closest)
+    },
+    'genre-series-drama': {
+        name: '📖 Drame',
+        type: 'series',
+        fetch: (page) => tmdb.getSeriesByGenre(18, page)
+    },
+    'genre-series-animation': {
+        name: '🎨 Animation',
+        type: 'series',
+        fetch: (page) => tmdb.getSeriesByGenre(16, page)
+    },
+    'genre-series-documentary': {
+        name: '📚 Documentaire',
+        type: 'series',
+        fetch: (page) => tmdb.getSeriesByGenre(99, page)
+    },
+
     // Séries spéciales
     'miniseries': {
         name: '📺 Mini-séries',
