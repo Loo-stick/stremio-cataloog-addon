@@ -21,9 +21,6 @@ if (!TMDB_API_KEY) {
 // Client TMDB
 const tmdb = new TMDBClient(TMDB_API_KEY, 'fr-FR');
 
-// Préfixe pour les IDs
-const ID_PREFIX = 'tmdb:';
-
 // ==================== DÉFINITION DES CATALOGUES ====================
 
 const CATALOGS = {
@@ -223,7 +220,7 @@ const manifest = {
     description: 'Catalogue enrichi TMDB - Tendances, genres, mini-séries, thématiques et plus',
     logo: 'https://www.themoviedb.org/assets/2/v4/logos/v2/blue_square_2-d537fb228cf3edd904ef09b136fe3fec72548ebc1fea3fbbd1ad9e36364db38b.svg',
     background: 'https://image.tmdb.org/t/p/original/56v2KjBlU4XaOv9rVYEQypROD7P.jpg',
-    resources: ['catalog', 'meta'],
+    resources: ['catalog'],
     types: ['movie', 'series'],
     catalogs: Object.entries(CATALOGS).map(([id, catalog]) => ({
         type: catalog.type,
@@ -231,7 +228,7 @@ const manifest = {
         name: catalog.name,
         extra: [{ name: 'skip', isRequired: false }]
     })),
-    idPrefixes: [ID_PREFIX] // Seulement tmdb: (les IDs IMDb sont gérés par Cinemeta)
+    // Pas de idPrefixes - on utilise des IDs IMDb gérés par Cinemeta
 };
 
 // ==================== ADDON ====================
@@ -264,41 +261,6 @@ builder.defineCatalogHandler(async ({ type, id, extra }) => {
     } catch (error) {
         console.error(`[Cataloog] Erreur catalogue ${id}:`, error.message);
         return { metas: [] };
-    }
-});
-
-/**
- * Handler pour les métadonnées
- */
-builder.defineMetaHandler(async ({ type, id }) => {
-    console.log(`[Cataloog] Meta demandée: ${id} (type: ${type})`);
-
-    try {
-        // Extraire l'ID TMDB
-        let tmdbId = id;
-        if (id.startsWith(ID_PREFIX)) {
-            tmdbId = id.replace(ID_PREFIX, '');
-        } else if (id.startsWith('tt')) {
-            // C'est un ID IMDB, on le passe tel quel
-            // Stremio utilisera Cinemeta pour ça
-            return { meta: null };
-        }
-
-        let meta;
-        if (type === 'movie') {
-            meta = await tmdb.getMovieDetails(tmdbId);
-        } else if (type === 'series') {
-            meta = await tmdb.getSeriesDetails(tmdbId);
-        }
-
-        if (!meta) {
-            return { meta: null };
-        }
-
-        return { meta };
-    } catch (error) {
-        console.error(`[Cataloog] Erreur meta ${id}:`, error.message);
-        return { meta: null };
     }
 });
 
