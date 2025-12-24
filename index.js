@@ -143,11 +143,6 @@ const CATALOGS = {
         type: 'series',
         fetch: (page) => tmdb.getSeriesByGenre(80, page) // Crime
     },
-    'genre-series-romance': {
-        name: '💕 Romance',
-        type: 'series',
-        fetch: (page) => tmdb.getSeriesByGenre(18, page) // Drama (closest)
-    },
     'genre-series-drama': {
         name: '📖 Drame',
         type: 'series',
@@ -237,12 +232,12 @@ const CATALOGS = {
     'hulu-movies': {
         name: '💚 Hulu',
         type: 'movie',
-        fetch: (page) => tmdb.getMoviesByProvider(15, page)
+        fetch: (page) => tmdb.getMoviesByProvider(15, page, 'US')
     },
     'peacock-movies': {
         name: '🦚 Peacock',
         type: 'movie',
-        fetch: (page) => tmdb.getMoviesByProvider(386, page)
+        fetch: (page) => tmdb.getMoviesByProvider(386, page, 'US')
     },
     'canal-movies': {
         name: '➕ Canal+',
@@ -289,12 +284,12 @@ const CATALOGS = {
     'hulu-series': {
         name: '💚 Hulu',
         type: 'series',
-        fetch: (page) => tmdb.getSeriesByProvider(15, page)
+        fetch: (page) => tmdb.getSeriesByProvider(15, page, 'US')
     },
     'peacock-series': {
         name: '🦚 Peacock',
         type: 'series',
-        fetch: (page) => tmdb.getSeriesByProvider(386, page)
+        fetch: (page) => tmdb.getSeriesByProvider(386, page, 'US')
     },
     'canal-series': {
         name: '➕ Canal+',
