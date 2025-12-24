@@ -57,11 +57,6 @@ const CATALOGS = {
         type: 'series',
         fetch: (page) => tmdb.getTopRatedSeries(page)
     },
-    'hidden-gems': {
-        name: '💎 Pépites cachées',
-        type: 'movie',
-        fetch: (page) => tmdb.getHiddenGems(page)
-    },
 
     // Sorties
     'now-playing': {
@@ -160,16 +155,6 @@ const CATALOGS = {
         type: 'movie',
         fetch: (page) => tmdb.getMoviesByCountry('JP', page)
     },
-    'country-in': {
-        name: '🇮🇳 Bollywood',
-        type: 'movie',
-        fetch: (page) => tmdb.getMoviesByCountry('IN', page)
-    },
-    'country-es': {
-        name: '🇪🇸 Cinéma Espagnol',
-        type: 'movie',
-        fetch: (page) => tmdb.getMoviesByCountry('ES', page)
-    },
 
     // Thématiques
     'christmas': {
@@ -177,20 +162,10 @@ const CATALOGS = {
         type: 'movie',
         fetch: (page) => tmdb.getChristmasMovies(page)
     },
-    'halloween': {
-        name: '🎃 Halloween',
-        type: 'movie',
-        fetch: (page) => tmdb.getHalloweenMovies(page)
-    },
     'feelgood': {
         name: '☀️ Feel Good',
         type: 'movie',
         fetch: (page) => tmdb.getFeelGoodMovies(page)
-    },
-    'mindbending': {
-        name: '🧠 Mind-Bending',
-        type: 'movie',
-        fetch: (page) => tmdb.getMindBendingMovies(page)
     },
     'cult': {
         name: '🍿 Films Cultes',
