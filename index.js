@@ -215,20 +215,20 @@ const CATALOGS = {
 
 const manifest = {
     id: 'community.stremio.cataloog',
-    version: '1.0.0',
+    version: '1.0.1',
     name: 'Cataloog',
     description: 'Catalogue enrichi TMDB - Tendances, genres, mini-séries, thématiques et plus',
     logo: 'https://www.themoviedb.org/assets/2/v4/logos/v2/blue_square_2-d537fb228cf3edd904ef09b136fe3fec72548ebc1fea3fbbd1ad9e36364db38b.svg',
     background: 'https://image.tmdb.org/t/p/original/56v2KjBlU4XaOv9rVYEQypROD7P.jpg',
     resources: ['catalog'],
     types: ['movie', 'series'],
+    idPrefixes: ['tt'],
     catalogs: Object.entries(CATALOGS).map(([id, catalog]) => ({
         type: catalog.type,
         id: `cataloog-${id}`,
         name: catalog.name,
         extra: [{ name: 'skip', isRequired: false }]
-    })),
-    // Pas de idPrefixes - on utilise des IDs IMDb gérés par Cinemeta
+    }))
 };
 
 // ==================== ADDON ====================
