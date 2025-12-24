@@ -1,0 +1,344 @@
+/**
+ * Stremio Cataloog Addon
+ *
+ * @description Catalogue enrichi avec TMDB - Tendances, genres, thématiques et plus
+ */
+
+const { addonBuilder, serveHTTP } = require('stremio-addon-sdk');
+const TMDBClient = require('./lib/tmdb');
+
+// Configuration
+const PORT = process.env.PORT || 7000;
+const ADDON_URL = process.env.ADDON_URL || `http://localhost:${PORT}`;
+const TMDB_API_KEY = process.env.TMDB_API_KEY;
+
+if (!TMDB_API_KEY) {
+    console.error('[Cataloog] ERREUR: TMDB_API_KEY non définie!');
+    console.error('[Cataloog] Ajoutez votre clé API TMDB dans les variables d\'environnement');
+    process.exit(1);
+}
+
+// Client TMDB
+const tmdb = new TMDBClient(TMDB_API_KEY, 'fr-FR');
+
+// Préfixe pour les IDs
+const ID_PREFIX = 'tmdb:';
+
+// ==================== DÉFINITION DES CATALOGUES ====================
+
+const CATALOGS = {
+    // Tendances
+    'trending-movies-day': {
+        name: '🔥 Tendances du jour',
+        type: 'movie',
+        fetch: (page) => tmdb.getTrendingMoviesDay(page)
+    },
+    'trending-movies-week': {
+        name: '📈 Tendances semaine',
+        type: 'movie',
+        fetch: (page) => tmdb.getTrendingMoviesWeek(page)
+    },
+    'trending-series-day': {
+        name: '🔥 Séries du jour',
+        type: 'series',
+        fetch: (page) => tmdb.getTrendingSeriesDay(page)
+    },
+    'trending-series-week': {
+        name: '📈 Séries semaine',
+        type: 'series',
+        fetch: (page) => tmdb.getTrendingSeriesWeek(page)
+    },
+
+    // Top & Classements
+    'top-rated-movies': {
+        name: '🏆 Top Films',
+        type: 'movie',
+        fetch: (page) => tmdb.getTopRatedMovies(page)
+    },
+    'top-rated-series': {
+        name: '🏆 Top Séries',
+        type: 'series',
+        fetch: (page) => tmdb.getTopRatedSeries(page)
+    },
+    'hidden-gems': {
+        name: '💎 Pépites cachées',
+        type: 'movie',
+        fetch: (page) => tmdb.getHiddenGems(page)
+    },
+
+    // Sorties
+    'now-playing': {
+        name: '🎬 Au cinéma',
+        type: 'movie',
+        fetch: (page) => tmdb.getNowPlayingMovies(page)
+    },
+    'upcoming': {
+        name: '📅 Prochainement',
+        type: 'movie',
+        fetch: (page) => tmdb.getUpcomingMovies(page)
+    },
+
+    // Genres Films
+    'genre-action': {
+        name: '💥 Action',
+        type: 'movie',
+        fetch: (page) => tmdb.getMoviesByGenre(28, page)
+    },
+    'genre-comedy': {
+        name: '😂 Comédie',
+        type: 'movie',
+        fetch: (page) => tmdb.getMoviesByGenre(35, page)
+    },
+    'genre-horror': {
+        name: '😱 Horreur',
+        type: 'movie',
+        fetch: (page) => tmdb.getMoviesByGenre(27, page)
+    },
+    'genre-scifi': {
+        name: '🚀 Science-Fiction',
+        type: 'movie',
+        fetch: (page) => tmdb.getMoviesByGenre(878, page)
+    },
+    'genre-thriller': {
+        name: '🔪 Thriller',
+        type: 'movie',
+        fetch: (page) => tmdb.getMoviesByGenre(53, page)
+    },
+    'genre-romance': {
+        name: '💕 Romance',
+        type: 'movie',
+        fetch: (page) => tmdb.getMoviesByGenre(10749, page)
+    },
+    'genre-drama': {
+        name: '📖 Drame',
+        type: 'movie',
+        fetch: (page) => tmdb.getMoviesByGenre(18, page)
+    },
+    'genre-animation': {
+        name: '🎨 Animation',
+        type: 'movie',
+        fetch: (page) => tmdb.getMoviesByGenre(16, page)
+    },
+    'genre-documentary': {
+        name: '📚 Documentaire',
+        type: 'movie',
+        fetch: (page) => tmdb.getMoviesByGenre(99, page)
+    },
+
+    // Séries spéciales
+    'miniseries': {
+        name: '📺 Mini-séries',
+        type: 'series',
+        fetch: (page) => tmdb.getMiniSeries(page)
+    },
+    'kdramas': {
+        name: '🇰🇷 K-Drama',
+        type: 'series',
+        fetch: (page) => tmdb.getKDramas(page)
+    },
+    'anime': {
+        name: '🇯🇵 Anime',
+        type: 'series',
+        fetch: (page) => tmdb.getAnime(page)
+    },
+    'docuseries': {
+        name: '📚 Docu-séries',
+        type: 'series',
+        fetch: (page) => tmdb.getDocuSeries(page)
+    },
+
+    // Par pays
+    'country-fr': {
+        name: '🇫🇷 Cinéma Français',
+        type: 'movie',
+        fetch: (page) => tmdb.getMoviesByCountry('FR', page)
+    },
+    'country-kr': {
+        name: '🇰🇷 Cinéma Coréen',
+        type: 'movie',
+        fetch: (page) => tmdb.getMoviesByCountry('KR', page)
+    },
+    'country-jp': {
+        name: '🇯🇵 Cinéma Japonais',
+        type: 'movie',
+        fetch: (page) => tmdb.getMoviesByCountry('JP', page)
+    },
+    'country-in': {
+        name: '🇮🇳 Bollywood',
+        type: 'movie',
+        fetch: (page) => tmdb.getMoviesByCountry('IN', page)
+    },
+    'country-es': {
+        name: '🇪🇸 Cinéma Espagnol',
+        type: 'movie',
+        fetch: (page) => tmdb.getMoviesByCountry('ES', page)
+    },
+
+    // Thématiques
+    'christmas': {
+        name: '🎄 Noël',
+        type: 'movie',
+        fetch: (page) => tmdb.getChristmasMovies(page)
+    },
+    'halloween': {
+        name: '🎃 Halloween',
+        type: 'movie',
+        fetch: (page) => tmdb.getHalloweenMovies(page)
+    },
+    'feelgood': {
+        name: '☀️ Feel Good',
+        type: 'movie',
+        fetch: (page) => tmdb.getFeelGoodMovies(page)
+    },
+    'mindbending': {
+        name: '🧠 Mind-Bending',
+        type: 'movie',
+        fetch: (page) => tmdb.getMindBendingMovies(page)
+    },
+    'cult': {
+        name: '🍿 Films Cultes',
+        type: 'movie',
+        fetch: (page) => tmdb.getCultMovies(page)
+    },
+    'family': {
+        name: '👨‍👩‍👧 Famille',
+        type: 'movie',
+        fetch: (page) => tmdb.getFamilyMovies(page)
+    },
+
+    // Récompenses
+    'oscars': {
+        name: '🏆 Oscars',
+        type: 'movie',
+        fetch: (page) => tmdb.getOscarWinners(page)
+    }
+};
+
+// ==================== MANIFEST ====================
+
+const manifest = {
+    id: 'community.stremio.cataloog',
+    version: '1.0.0',
+    name: 'Cataloog',
+    description: 'Catalogue enrichi TMDB - Tendances, genres, mini-séries, thématiques et plus',
+    logo: 'https://www.themoviedb.org/assets/2/v4/logos/v2/blue_square_2-d537fb228cf3edd904ef09b136fe3fec72548ebc1fea3fbbd1ad9e36364db38b.svg',
+    background: 'https://image.tmdb.org/t/p/original/56v2KjBlU4XaOv9rVYEQypROD7P.jpg',
+    resources: ['catalog', 'meta'],
+    types: ['movie', 'series'],
+    catalogs: Object.entries(CATALOGS).map(([id, catalog]) => ({
+        type: catalog.type,
+        id: `cataloog-${id}`,
+        name: catalog.name,
+        extra: [{ name: 'skip', isRequired: false }]
+    })),
+    idPrefixes: [ID_PREFIX, 'tt'] // Supporte tmdb: et imdb (tt)
+};
+
+// ==================== ADDON ====================
+
+const builder = new addonBuilder(manifest);
+
+/**
+ * Handler pour les catalogues
+ */
+builder.defineCatalogHandler(async ({ type, id, extra }) => {
+    console.log(`[Cataloog] Catalogue demandé: ${id} (type: ${type})`);
+
+    const catalogId = id.replace('cataloog-', '');
+    const catalog = CATALOGS[catalogId];
+
+    if (!catalog) {
+        console.log(`[Cataloog] Catalogue inconnu: ${catalogId}`);
+        return { metas: [] };
+    }
+
+    const skip = parseInt(extra?.skip) || 0;
+    const page = Math.floor(skip / 20) + 1;
+
+    try {
+        const results = await catalog.fetch(page);
+
+        console.log(`[Cataloog] ${results.length} résultats pour ${catalog.name}`);
+
+        return { metas: results };
+    } catch (error) {
+        console.error(`[Cataloog] Erreur catalogue ${id}:`, error.message);
+        return { metas: [] };
+    }
+});
+
+/**
+ * Handler pour les métadonnées
+ */
+builder.defineMetaHandler(async ({ type, id }) => {
+    console.log(`[Cataloog] Meta demandée: ${id} (type: ${type})`);
+
+    try {
+        // Extraire l'ID TMDB
+        let tmdbId = id;
+        if (id.startsWith(ID_PREFIX)) {
+            tmdbId = id.replace(ID_PREFIX, '');
+        } else if (id.startsWith('tt')) {
+            // C'est un ID IMDB, on le passe tel quel
+            // Stremio utilisera Cinemeta pour ça
+            return { meta: null };
+        }
+
+        let meta;
+        if (type === 'movie') {
+            meta = await tmdb.getMovieDetails(tmdbId);
+        } else if (type === 'series') {
+            meta = await tmdb.getSeriesDetails(tmdbId);
+        }
+
+        if (!meta) {
+            return { meta: null };
+        }
+
+        return { meta };
+    } catch (error) {
+        console.error(`[Cataloog] Erreur meta ${id}:`, error.message);
+        return { meta: null };
+    }
+});
+
+// ==================== SERVEUR ====================
+
+serveHTTP(builder.getInterface(), { port: PORT });
+
+console.log(`
+[Cataloog] ========================================
+[Cataloog] Cataloog Addon v${manifest.version} démarré!
+[Cataloog] Port: ${PORT}
+[Cataloog] URL: ${ADDON_URL}
+[Cataloog] Manifest: ${ADDON_URL}/manifest.json
+[Cataloog] ========================================
+
+[Cataloog] ${Object.keys(CATALOGS).length} catalogues disponibles:
+
+  📈 Tendances:
+     - Tendances du jour/semaine (films & séries)
+
+  🏆 Classements:
+     - Top Films, Top Séries, Pépites cachées
+
+  🎬 Sorties:
+     - Au cinéma, Prochainement
+
+  🎭 Genres:
+     - Action, Comédie, Horreur, SF, Thriller, Romance, Drame, Animation, Documentaire
+
+  📺 Séries:
+     - Mini-séries, K-Drama, Anime, Docu-séries
+
+  🌍 Par pays:
+     - France, Corée, Japon, Inde, Espagne
+
+  🎄 Thématiques:
+     - Noël, Halloween, Feel Good, Mind-Bending, Cultes, Famille
+
+  🏆 Récompenses:
+     - Oscars
+
+[Cataloog] ========================================
+`);
