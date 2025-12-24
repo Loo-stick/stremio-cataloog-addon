@@ -200,106 +200,104 @@ const CATALOGS = {
 
     // Plateformes - Films
     'netflix-movies': {
-        name: '🔴 Netflix',
+        name: '🔴 Netflix(Films)',
         type: 'movie',
         fetch: (page) => tmdb.getMoviesByProvider(8, page)
     },
-    'disney-movies': {
-        name: '🏰 Disney+',
-        type: 'movie',
-        fetch: (page) => tmdb.getMoviesByProvider(337, page)
-    },
-    'prime-movies': {
-        name: '📦 Prime Video',
-        type: 'movie',
-        fetch: (page) => tmdb.getMoviesByProvider(119, page)
-    },
-    'apple-movies': {
-        name: '🍎 Apple TV+',
-        type: 'movie',
-        fetch: (page) => tmdb.getMoviesByProvider(350, page)
-    },
-    'hbo-movies': {
-        name: '💜 Max (HBO)',
-        type: 'movie',
-        fetch: (page) => tmdb.getMoviesByProvider(384, page)
-    },
-    'paramount-movies': {
-        name: '⛰️ Paramount+',
-        type: 'movie',
-        fetch: (page) => tmdb.getMoviesByProvider(531, page)
-    },
-    'hulu-movies': {
-        name: '💚 Hulu',
-        type: 'movie',
-        fetch: (page) => tmdb.getMoviesByProvider(15, page, 'US')
-    },
-    'peacock-movies': {
-        name: '🦚 Peacock',
-        type: 'movie',
-        fetch: (page) => tmdb.getMoviesByProvider(386, page, 'US')
-    },
-    'canal-movies': {
-        name: '➕ Canal+',
-        type: 'movie',
-        fetch: (page) => tmdb.getMoviesByProvider(381, page)
-    },
-    'ocs-movies': {
-        name: '🟠 OCS',
-        type: 'movie',
-        fetch: (page) => tmdb.getMoviesByProvider(56, page)
-    },
-
-    // Plateformes - Séries
     'netflix-series': {
-        name: '🔴 Netflix',
+        name: '🔴 Netflix(Série)',
         type: 'series',
         fetch: (page) => tmdb.getSeriesByProvider(8, page)
     },
-    'disney-series': {
-        name: '🏰 Disney+',
-        type: 'series',
-        fetch: (page) => tmdb.getSeriesByProvider(337, page)
+    'prime-movies': {
+        name: '📦 Prime Video(Films)',
+        type: 'movie',
+        fetch: (page) => tmdb.getMoviesByProvider(119, page)
     },
     'prime-series': {
-        name: '📦 Prime Video',
+        name: '📦 Prime Video(Série)',
         type: 'series',
         fetch: (page) => tmdb.getSeriesByProvider(119, page)
     },
+    'disney-movies': {
+        name: '🏰 Disney+(Films)',
+        type: 'movie',
+        fetch: (page) => tmdb.getMoviesByProvider(337, page)
+    },
+    'disney-series': {
+        name: '🏰 Disney+(Série)',
+        type: 'series',
+        fetch: (page) => tmdb.getSeriesByProvider(337, page)
+    },
+    'apple-movies': {
+        name: '🍎 Apple TV+(Films)',
+        type: 'movie',
+        fetch: (page) => tmdb.getMoviesByProvider(350, page)
+    },
     'apple-series': {
-        name: '🍎 Apple TV+',
+        name: '🍎 Apple TV+(Série)',
         type: 'series',
         fetch: (page) => tmdb.getSeriesByProvider(350, page)
     },
+    'hbo-movies': {
+        name: '💜 Max (HBO)(Films)',
+        type: 'movie',
+        fetch: (page) => tmdb.getMoviesByProvider(384, page)
+    },
     'hbo-series': {
-        name: '💜 Max (HBO)',
+        name: '💜 Max (HBO)(Série)',
         type: 'series',
         fetch: (page) => tmdb.getSeriesByProvider(384, page)
     },
-    'paramount-series': {
-        name: '⛰️ Paramount+',
-        type: 'series',
-        fetch: (page) => tmdb.getSeriesByProvider(531, page)
-    },
-    'hulu-series': {
-        name: '💚 Hulu',
-        type: 'series',
-        fetch: (page) => tmdb.getSeriesByProvider(15, page, 'US')
-    },
-    'peacock-series': {
-        name: '🦚 Peacock',
-        type: 'series',
-        fetch: (page) => tmdb.getSeriesByProvider(386, page, 'US')
+    'canal-movies': {
+        name: '➕ Canal+(Films)',
+        type: 'movie',
+        fetch: (page) => tmdb.getMoviesByProvider(381, page)
     },
     'canal-series': {
-        name: '➕ Canal+',
+        name: '➕ Canal+(Série)',
         type: 'series',
         fetch: (page) => tmdb.getSeriesByProvider(381, page)
     },
+    'ocs-movies': {
+        name: '🟠 OCS(Films)',
+        type: 'movie',
+        fetch: (page) => tmdb.getMoviesByProvider(56, page)
+    },
     'ocs-series': {
-        name: '🟠 OCS',
+        name: '🟠 OCS(Série)',
         type: 'series',
         fetch: (page) => tmdb.getSeriesByProvider(56, page)
+    },
+    'paramount-movies': {
+        name: '⛰️ Paramount+(Films)',
+        type: 'movie',
+        fetch: (page) => tmdb.getMoviesByProvider(531, page)
+    },
+    'paramount-series': {
+        name: '⛰️ Paramount+(Série)',
+        type: 'series',
+        fetch: (page) => tmdb.getSeriesByProvider(531, page)
+    },
+    'hulu-movies': {
+        name: '💚 Hulu(Films)',
+        type: 'movie',
+        fetch: (page) => tmdb.getMoviesByProvider(15, page, 'US')
+    },
+    'hulu-series': {
+        name: '💚 Hulu(Série)',
+        type: 'series',
+        fetch: (page) => tmdb.getSeriesByProvider(15, page, 'US')
+    },
+    'peacock-movies': {
+        name: '🦚 Peacock(Films)',
+        type: 'movie',
+        fetch: (page) => tmdb.getMoviesByProvider(386, page, 'US')
+    },
+    'peacock-series': {
+        name: '🦚 Peacock(Série)',
+        type: 'series',
+        fetch: (page) => tmdb.getSeriesByProvider(386, page, 'US')
     },
 
     // Thématiques
