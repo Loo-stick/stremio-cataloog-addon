@@ -156,6 +156,110 @@ const CATALOGS = {
         fetch: (page) => tmdb.getMoviesByCountry('JP', page)
     },
 
+    // Plateformes - Films
+    'netflix-movies': {
+        name: '🔴 Netflix',
+        type: 'movie',
+        fetch: (page) => tmdb.getMoviesByProvider(8, page)
+    },
+    'disney-movies': {
+        name: '🏰 Disney+',
+        type: 'movie',
+        fetch: (page) => tmdb.getMoviesByProvider(337, page)
+    },
+    'prime-movies': {
+        name: '📦 Prime Video',
+        type: 'movie',
+        fetch: (page) => tmdb.getMoviesByProvider(119, page)
+    },
+    'apple-movies': {
+        name: '🍎 Apple TV+',
+        type: 'movie',
+        fetch: (page) => tmdb.getMoviesByProvider(350, page)
+    },
+    'hbo-movies': {
+        name: '💜 Max (HBO)',
+        type: 'movie',
+        fetch: (page) => tmdb.getMoviesByProvider(384, page)
+    },
+    'paramount-movies': {
+        name: '⛰️ Paramount+',
+        type: 'movie',
+        fetch: (page) => tmdb.getMoviesByProvider(531, page)
+    },
+    'hulu-movies': {
+        name: '💚 Hulu',
+        type: 'movie',
+        fetch: (page) => tmdb.getMoviesByProvider(15, page)
+    },
+    'peacock-movies': {
+        name: '🦚 Peacock',
+        type: 'movie',
+        fetch: (page) => tmdb.getMoviesByProvider(386, page)
+    },
+    'canal-movies': {
+        name: '➕ Canal+',
+        type: 'movie',
+        fetch: (page) => tmdb.getMoviesByProvider(381, page)
+    },
+    'ocs-movies': {
+        name: '🟠 OCS',
+        type: 'movie',
+        fetch: (page) => tmdb.getMoviesByProvider(56, page)
+    },
+
+    // Plateformes - Séries
+    'netflix-series': {
+        name: '🔴 Netflix',
+        type: 'series',
+        fetch: (page) => tmdb.getSeriesByProvider(8, page)
+    },
+    'disney-series': {
+        name: '🏰 Disney+',
+        type: 'series',
+        fetch: (page) => tmdb.getSeriesByProvider(337, page)
+    },
+    'prime-series': {
+        name: '📦 Prime Video',
+        type: 'series',
+        fetch: (page) => tmdb.getSeriesByProvider(119, page)
+    },
+    'apple-series': {
+        name: '🍎 Apple TV+',
+        type: 'series',
+        fetch: (page) => tmdb.getSeriesByProvider(350, page)
+    },
+    'hbo-series': {
+        name: '💜 Max (HBO)',
+        type: 'series',
+        fetch: (page) => tmdb.getSeriesByProvider(384, page)
+    },
+    'paramount-series': {
+        name: '⛰️ Paramount+',
+        type: 'series',
+        fetch: (page) => tmdb.getSeriesByProvider(531, page)
+    },
+    'hulu-series': {
+        name: '💚 Hulu',
+        type: 'series',
+        fetch: (page) => tmdb.getSeriesByProvider(15, page)
+    },
+    'peacock-series': {
+        name: '🦚 Peacock',
+        type: 'series',
+        fetch: (page) => tmdb.getSeriesByProvider(386, page)
+    },
+    'canal-series': {
+        name: '➕ Canal+',
+        type: 'series',
+        fetch: (page) => tmdb.getSeriesByProvider(381, page)
+    },
+    'ocs-series': {
+        name: '🟠 OCS',
+        type: 'series',
+        fetch: (page) => tmdb.getSeriesByProvider(56, page)
+    },
+
     // Thématiques
     'christmas': {
         name: '🎄 Noël',
