@@ -231,7 +231,7 @@ const manifest = {
         name: catalog.name,
         extra: [{ name: 'skip', isRequired: false }]
     })),
-    idPrefixes: [ID_PREFIX, 'tt'] // Supporte tmdb: et imdb (tt)
+    idPrefixes: [ID_PREFIX] // Seulement tmdb: (les IDs IMDb sont gérés par Cinemeta)
 };
 
 // ==================== ADDON ====================
